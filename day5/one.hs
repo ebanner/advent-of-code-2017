@@ -15,7 +15,11 @@ getJumpOffsets = do
 run :: Map Int Int -> Int -> Int
 run jumpOffsets pc
   | pc < 0 || length jumpOffsets <= pc = 0
-  | otherwise = (+1) $ run (Map.adjust (+1) pc jumpOffsets) (pc + (jumpOffsets Map.! pc))
+  | otherwise =
+      (+1) $
+        run
+          (Map.adjust (+1) pc jumpOffsets)
+          (pc + (jumpOffsets Map.! pc))
 
 
 main = do
