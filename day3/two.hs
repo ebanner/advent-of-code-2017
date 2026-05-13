@@ -69,14 +69,12 @@ main = do
     grid = Map.singleton (0,0) 1
     m = 2
 
-    (grid', _) = foldr go id [3,5..] (grid, m)
+    supremum = foldr go (const 0) [3,5..] (grid, m)
 
     go n rest (grid, m) =
       case find key grid of
-        Just v -> (grid, m)
+        Just v -> v
         Nothing -> rest $ expand grid n m
 
   in
-    print $ 
-      fromJust $
-        find key grid'
+    print supremum
