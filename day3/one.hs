@@ -22,10 +22,10 @@ expand grid n m = (grid', m')
     y = y'-1
 
     indices = 
-      [(xx,k) | k <- [y'..yy]] ++
-      [(k,yy) | k <- [xx-1,xx-2..x]] ++
-      [ (x,k) | k <- [yy-1,yy-2..y]] ++
-      [ (k,y) | k <- [x+1..xx]]
+      [(xx,z) | z <- [y'..yy]] ++
+      [(z,yy) | z <- [xx-1,xx-2..x]] ++
+      [ (x,z) | z <- [yy-1,yy-2..y]] ++
+      [ (z,y) | z <- [x+1..xx]]
     
     (grid', m') = foldl go (grid, m) indices
 
@@ -53,15 +53,12 @@ main = do
     grid = Map.singleton (0,0) 1
     m = 2
 
-    (grid', _) = foldr go id [3,5..] (grid, m)
+    distance' = foldr go (const 0) [3,5..] (grid, m)
 
     go n rest (grid, m) =
       case find key grid of
-        Just (x,y) -> (grid, m)
+        Just (x,y) -> distance (x,y)
         Nothing -> rest $ expand grid n m
 
   in
-    print $ 
-      distance $
-        fromJust $
-          find key grid'
+    print distance'
